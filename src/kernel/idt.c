@@ -5,7 +5,7 @@
 idt_entry_t idt[IDT_ENTRIES];
 idt_ptr_t idtp;
 
-void idt_set_entry(int index, uint32_t base, uint16_t selector,
+void idt_set(int index, uint32_t base, uint16_t selector,
                    uint8_t type_attr) {
   idt[index].offset_low = base & 0xFFFF;
   idt[index].offset_high = (base >> 16) & 0xFFFF;

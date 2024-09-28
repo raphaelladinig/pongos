@@ -16,7 +16,7 @@ typedef struct {
     uint32_t base;
 } __attribute__((packed)) idt_ptr_t;
 
-void idt_set_entry(int index, uint32_t base, uint16_t selector,
+void idt_set(int index, uint32_t base, uint16_t selector,
                    uint8_t type_attr);
 
 void idt_init();
