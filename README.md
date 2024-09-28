@@ -10,6 +10,8 @@ my attempt at programming a simple "os"
 
 - [ ] write keyboard driver
   - [ ] write idt
+- [ ] write terminal
+- [ ] write pong
 
 ### Ressources
 
