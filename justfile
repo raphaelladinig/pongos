@@ -7,5 +7,5 @@ build:
 clean:
   rm -rf out
 
-run: clean build
+run:
   qemu-system-i386 -drive format=raw,file=out/sou.iso
