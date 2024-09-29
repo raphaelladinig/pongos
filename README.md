@@ -8,9 +8,11 @@ my attempt at programming a simple "os"
 
 ### Todo
 
-- [ ] write keyboard driver
-  - [ ] write idt
+- [ ] proper build script
 - [ ] write terminal
+  - [ ] proper output
+  - [ ] write keyboard driver
+    - [ ] write idt
 - [ ] write pong
 
 ### Ressources
