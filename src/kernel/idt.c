@@ -1,4 +1,5 @@
 #include "include/idt.h"
+#include "include/keyboard.h"
 #include "include/terminal.h"
 #include "include/vga.h"
 
@@ -27,6 +28,7 @@ void idt_init() {
   idtp.limit = (sizeof(idt_entry_t) * IDT_ENTRIES) - 1;
 
   idt_set(0, (uintptr_t)divide_by_zero, 0x08, 0x8E);
+  idt_set(33, (uintptr_t)keyboard_interrupt_handler, 0x08, 0x8E);
 
   asm volatile("lidt %0" : : "m"(idtp));
 }
