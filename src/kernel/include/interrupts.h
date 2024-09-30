@@ -1,5 +1,5 @@
-#ifndef IDT_H
-#define IDT_H
+#ifndef INTERRUPTS_H
+#define INTERRUPTS_H
 
 #include <stdint.h>
 
@@ -22,5 +22,7 @@ void idt_set(int index, uint32_t base, uint16_t selector,
 void idt_init();
 
 void pic_init();
+
+void interrupts_init();
 
 #endif

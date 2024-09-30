@@ -8,9 +8,9 @@ my attempt at programming a simple "os"
 
 ### Todo
 
-- [ ] proper build script
+- [x] proper build script
 - [ ] write terminal
-  - [ ] proper output
+  - [x] proper output
   - [ ] write keyboard driver
     - [ ] write idt
 - [ ] write pong
