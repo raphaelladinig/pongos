@@ -25,4 +25,6 @@ void pic_init();
 
 void interrupts_init();
 
+void divide_by_zero();
+
 #endif
