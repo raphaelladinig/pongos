@@ -1,7 +1,7 @@
 #include "include/terminal.h"
 #include "include/io.h"
-#include "include/lib.h"
 #include "include/vga.h"
+#include "include/lib.h"
 
 size_t terminal_row;
 size_t terminal_column;
