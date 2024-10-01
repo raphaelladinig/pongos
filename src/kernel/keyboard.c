@@ -63,9 +63,42 @@ char scan_code_to_ascii(unsigned char scan_code) {
   }
 }
 
-void keyboard_interrupt_handler() {
-  unsigned char scan_code = read_scan_code();
-  terminal_putchar(scan_code_to_ascii(scan_code));
-  terminal_writestring("keyboard signal");
-  outb(0x20, 0x20);
+void keyboard_handle_input() {
+  unsigned char scancode = read_scan_code();
+
+  if (scancode < 0x80) {
+    char ascii_char = scan_code_to_ascii(scancode);
+    terminal_putchar(ascii_char);
+  }
 }
+
+/* #define BUFFER_SIZE 128 */
+/**/
+/* char keyboard_buffer[BUFFER_SIZE]; */
+/* int buffer_head = 0; */
+/* int buffer_tail = 0; */
+/**/
+/* char get_next_char() { */
+/*   if (buffer_head == buffer_tail) { */
+/*     return 0; // Buffer is empty */
+/*   } */
+/*   char c = keyboard_buffer[buffer_tail]; */
+/*   buffer_tail = (buffer_tail + 1) % BUFFER_SIZE; */
+/*   return c; */
+/* } */
+/**/
+/* void keyboard_handle_input() { */
+/*   // Read the scancode from the keyboard controller */
+/*   uint8_t scancode = inb(0x60); */
+/**/
+/*   // Convert scancode to ASCII (you'll need a mapping for this) */
+/*   char ascii_char = scan_code_to_ascii(scancode); */
+/**/
+/*   // Store the character in the buffer if there's space */
+/*   if ((buffer_head + 1) % BUFFER_SIZE != buffer_tail) { */
+/*     keyboard_buffer[buffer_head] = ascii_char; */
+/*     buffer_head = (buffer_head + 1) % BUFFER_SIZE; */
+/*   } */
+/**/
+/* } */
+

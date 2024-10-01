@@ -25,6 +25,8 @@ void pic_init();
 
 void interrupts_init();
 
-void divide_by_zero();
+void divide_by_zero_interrupt();
+
+void keyboard_interrupt();
 
 #endif

@@ -21,10 +21,11 @@ void idt_init() {
   idtp.base = (uintptr_t)&idt;
   idtp.limit = (sizeof(idt_entry_t) * IDT_ENTRIES) - 1;
 
-  idt_set(0, (uintptr_t)divide_by_zero, 0x08, 0x8E);
-  idt_set(33, (uintptr_t)keyboard_interrupt_handler, 0x08, 0x8E);
+  idt_set(0, (uintptr_t)divide_by_zero_interrupt, 0x08, 0x8E);
+  idt_set(33, (uintptr_t)keyboard_interrupt, 0x08, 0x8E);
 
   asm volatile("lidt %0" : : "m"(idtp));
+  asm volatile("sti");
 }
 
 #define PIC1_COMMAND 0x20
@@ -49,8 +50,8 @@ void pic_init() {
   outb(PIC1_DATA, 0x01);
   outb(PIC2_DATA, 0x01);
 
-  // Unmask all IRQs (enable all interrupts)
-  outb(PIC1_DATA, 0xFF);
+  // Unmask all IRQs (0xFF masks all, so we need to unmask IRQ1)
+  outb(PIC1_DATA, 0xFD);
   outb(PIC2_DATA, 0xFF);
 }
 
@@ -59,10 +60,14 @@ void interrupts_init() {
   idt_init();
 }
 
-void divide_by_zero() {
+void divide_by_zero_interrupt() {
   terminal_setcolor(VGA_COLOR_RED);
   terminal_writestring("\n!!! Divide by zero exception occurred !!!\n");
   while (1) {
   }
 }
 
+void keyboard_interrupt() {
+  keyboard_handle_input();
+  outb(0x20, 0x20); // EOI
+}
