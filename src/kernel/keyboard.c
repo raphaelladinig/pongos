@@ -42,9 +42,9 @@ char scan_code_to_ascii(unsigned char scan_code) {
     return 'q';
   case 0x13:
     return 'r';
-  case 0x14:
+  case 0x1F:
     return 's';
-  case 0x15:
+  case 0x14:
     return 't';
   case 0x16:
     return 'u';
@@ -54,9 +54,9 @@ char scan_code_to_ascii(unsigned char scan_code) {
     return 'w';
   case 0x2D:
     return 'x';
-  case 0x2C:
+  case 0x15:
     return 'y';
-  case 0x2A:
+  case 0x2C:
     return 'z';
   default:
     return 0;
