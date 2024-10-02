@@ -2,8 +2,6 @@
 #include "include/terminal.h"
 #include "include/vga.h"
 
-#define BUFFER_SIZE 128
-
 int main() {
   enum vga_color color_fg = VGA_COLOR_LIGHT_GREY;
   enum vga_color color_bg = VGA_COLOR_BLACK;
@@ -11,8 +9,10 @@ int main() {
   terminal_initialize(color_fg, color_bg);
   interrupts_init();
 
-  /* terminal_writestring("test\n"); */
-  /* terminal_writestring("test"); */
+  /* terminal_writestring("test "); */
+
+  while (1) {
+  }
 
   return 0;
 }
