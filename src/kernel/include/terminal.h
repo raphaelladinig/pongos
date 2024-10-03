@@ -16,5 +16,7 @@ void terminal_handle_input(char c);
 void terminal_backspace();
 void terminal_newline();
 void terminal_begin_line();
+void terminal_clear();
+void terminal_scroll();
 
 #endif
