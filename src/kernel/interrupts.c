@@ -1,7 +1,6 @@
 #include "include/interrupts.h"
 #include "include/io.h"
 #include "include/keyboard.h"
-#include "include/terminal.h"
 
 void interrupts_init() {
   pic_init();

@@ -9,8 +9,10 @@ size_t cursor_pos;
 size_t relative_terminal_column;
 uint8_t terminal_color;
 uint16_t *terminal_buffer;
+enum vga_color color_fg = VGA_COLOR_LIGHT_GREY;
+enum vga_color color_bg = VGA_COLOR_BLACK;
 
-void terminal_init(enum vga_color color_fg, enum vga_color color_bg) {
+void terminal_init() {
   terminal_row = 0;
   terminal_column = 0;
   cursor_pos = 0;
@@ -23,24 +25,20 @@ void terminal_init(enum vga_color color_fg, enum vga_color color_bg) {
     }
   }
 
-  terminal_newline();
+  terminal_begin_line();
 }
 
 void terminal_begin_line() {
+  terminal_setcolor(VGA_COLOR_LIGHT_GREEN);
   relative_terminal_column = 0;
-  terminal_writestring("sou: ");
+  terminal_writestring("$ ");
+  terminal_setcolor(color_fg);
 }
 
 void terminal_newline() {
-  if (terminal_row == 0 && terminal_column == 0) {
-    terminal_begin_line();
-    return;
-  }
-
   terminal_row++;
   terminal_column = 0;
   cursor_pos = terminal_row * VGA_WIDTH;
-  terminal_begin_line();
 }
 
 void terminal_setcolor(uint8_t color) { terminal_color = color; }
@@ -102,4 +100,8 @@ void terminal_handle_input(char c) {
   } else {
     terminal_putchar(c);
   }
+  
+  if (c == '\n') {
+    terminal_begin_line();
+  } 
 }

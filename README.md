@@ -11,8 +11,9 @@ my attempt at programming a simple "os"
 - [x] proper build script
 - [ ] write terminal
   - [x] proper output
-  - [ ] write keyboard driver
-    - [ ] write idt
+  - [x] write keyboard driver
+    - [x] write idt
+  - [ ] functionality
 - [ ] write pong
 
 ### Ressources
