@@ -28,13 +28,15 @@ build-kernel:
   object_files=$(find out/kernel -name '*.o' ! -name 'entry.o')
   clang -m32 -T src/kernel/linker.ld out/kernel/entry.o $object_files -nostdlib -o out/kernel/kernel.bin
 
-make-iso: build-bootloader build-kernel
+build: build-bootloader build-kernel
   cat out/boot.bin out/kernel/kernel.bin > out/sou.iso
 
 clean:
   rm -rf out
 
+clean-build: clean build
+
 run:
   qemu-system-i386 -drive format=raw,file=out/sou.iso
 
-build-run: clean make-iso run
+build-run: clean-build run

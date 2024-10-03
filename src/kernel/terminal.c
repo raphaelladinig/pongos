@@ -5,14 +5,15 @@
 
 size_t terminal_row;
 size_t terminal_column;
-size_t terminal_cursor_pos;
+size_t cursor_pos;
+size_t relative_terminal_column;
 uint8_t terminal_color;
 uint16_t *terminal_buffer;
 
-void terminal_initialize(enum vga_color color_fg, enum vga_color color_bg) {
+void terminal_init(enum vga_color color_fg, enum vga_color color_bg) {
   terminal_row = 0;
   terminal_column = 0;
-  terminal_cursor_pos = 0;
+  cursor_pos = 0;
   terminal_color = vga_entry_color(color_fg, color_bg);
   terminal_buffer = (uint16_t *)0xB8000;
   for (size_t y = 0; y < VGA_HEIGHT; y++) {
@@ -21,7 +22,25 @@ void terminal_initialize(enum vga_color color_fg, enum vga_color color_bg) {
       terminal_buffer[index] = vga_entry(' ', terminal_color);
     }
   }
+
+  terminal_newline();
+}
+
+void terminal_begin_line() {
+  relative_terminal_column = 0;
   terminal_writestring("sou: ");
+}
+
+void terminal_newline() {
+  if (terminal_row == 0 && terminal_column == 0) {
+    terminal_begin_line();
+    return;
+  }
+
+  terminal_row++;
+  terminal_column = 0;
+  cursor_pos = terminal_row * VGA_WIDTH;
+  terminal_begin_line();
 }
 
 void terminal_setcolor(uint8_t color) { terminal_color = color; }
@@ -33,12 +52,11 @@ void terminal_putentryat(char c, uint8_t color, size_t x, size_t y) {
 
 void terminal_putchar(char c) {
   if (c == '\n') {
-    terminal_row++;
-    terminal_column = 0;
-    terminal_cursor_pos = terminal_row * VGA_WIDTH;
-    terminal_writestring("sou: ");
+    terminal_newline();
   } else {
-    terminal_cursor_pos++;
+    relative_terminal_column++;
+
+    cursor_pos++;
     terminal_putentryat(c, terminal_color, terminal_column, terminal_row);
     if (++terminal_column == VGA_WIDTH) {
       terminal_column = 0;
@@ -46,7 +64,7 @@ void terminal_putchar(char c) {
         terminal_row = 0;
     }
   }
-  terminal_move_cursor(terminal_cursor_pos);
+  terminal_move_cursor(cursor_pos);
 }
 
 void terminal_write(const char *data, size_t size) {
@@ -66,13 +84,16 @@ void terminal_move_cursor(short pos) {
 }
 
 void terminal_backspace() {
-  if (terminal_column > 5) {
-    terminal_column--;
-    terminal_putchar(' ');
-    terminal_column--;
-    terminal_cursor_pos -= 2;
-    terminal_move_cursor(terminal_cursor_pos);
+  if (relative_terminal_column <= 5) {
+    return;
   }
+
+  relative_terminal_column--;
+  terminal_column--;
+  terminal_putchar(' ');
+  relative_terminal_column--;
+  terminal_column--;
+  terminal_move_cursor(cursor_pos -= 2);
 }
 
 void terminal_handle_input(char c) {
