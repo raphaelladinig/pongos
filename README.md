@@ -14,7 +14,10 @@ my attempt at programming a simple "os"
   - [x] write keyboard driver
     - [x] write idt
   - [ ] functionality
+    - [ ] scrolling
+    - [ ] basic commands
 - [ ] write pong
+- [ ] try to get it working on real hardware
 
 ### Ressources
 
