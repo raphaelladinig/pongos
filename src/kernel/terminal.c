@@ -1,7 +1,7 @@
 #include "include/terminal.h"
 #include "include/io.h"
-#include "include/vga.h"
 #include "include/lib.h"
+#include "include/vga.h"
 
 size_t terminal_row;
 size_t terminal_column;
@@ -21,6 +21,7 @@ void terminal_initialize(enum vga_color color_fg, enum vga_color color_bg) {
       terminal_buffer[index] = vga_entry(' ', terminal_color);
     }
   }
+  terminal_writestring("sou: ");
 }
 
 void terminal_setcolor(uint8_t color) { terminal_color = color; }
@@ -35,6 +36,7 @@ void terminal_putchar(char c) {
     terminal_row++;
     terminal_column = 0;
     terminal_cursor_pos = terminal_row * VGA_WIDTH;
+    terminal_writestring("sou: ");
   } else {
     terminal_cursor_pos++;
     terminal_putentryat(c, terminal_color, terminal_column, terminal_row);
@@ -61,4 +63,22 @@ void terminal_move_cursor(short pos) {
   outb(0x3D5, ((pos >> 8) & 0x00FF));
   outb(0x3D4, 15);
   outb(0x3D5, pos & 0x00FF);
+}
+
+void terminal_backspace() {
+  if (terminal_column > 5) {
+    terminal_column--;
+    terminal_putchar(' ');
+    terminal_column--;
+    terminal_cursor_pos -= 2;
+    terminal_move_cursor(terminal_cursor_pos);
+  }
+}
+
+void terminal_handle_input(char c) {
+  if (c == '\b') {
+    terminal_backspace();
+  } else {
+    terminal_putchar(c);
+  }
 }

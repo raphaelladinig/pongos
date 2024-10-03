@@ -9,8 +9,6 @@ int main() {
   terminal_initialize(color_fg, color_bg);
   interrupts_init();
 
-  /* terminal_writestring("test "); */
-
   while (1) {
   }
 
