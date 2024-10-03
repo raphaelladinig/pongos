@@ -15,7 +15,7 @@ my attempt at programming a simple "os"
     - [x] write idt
   - [ ] functionality
     - [x] scrolling
-    - [ ] basic commands
+    - [x] basic commands
 - [ ] write pong
 - [ ] try to get it working on real hardware
 

@@ -6,7 +6,6 @@
 size_t terminal_row;
 size_t terminal_column;
 size_t cursor_pos;
-size_t relative_terminal_column;
 uint8_t terminal_color;
 uint16_t *terminal_buffer;
 enum vga_color color_fg = VGA_COLOR_LIGHT_GREY;
@@ -30,7 +29,6 @@ void terminal_init() {
 
 void terminal_begin_line() {
   terminal_setcolor(VGA_COLOR_LIGHT_GREEN);
-  relative_terminal_column = 0;
   terminal_writestring("$ ");
   terminal_setcolor(color_fg);
 }
@@ -87,7 +85,6 @@ void terminal_putchar(char c) {
   if (c == '\n') {
     terminal_newline();
   } else {
-    relative_terminal_column++;
 
     cursor_pos++;
     terminal_putentryat(c, terminal_color, terminal_column, terminal_row);
@@ -115,26 +112,49 @@ void terminal_move_cursor(short pos) {
 }
 
 void terminal_backspace() {
-  if (relative_terminal_column <= 2) {
-    return;
-  }
-
-  relative_terminal_column--;
   terminal_column--;
   terminal_putchar(' ');
-  relative_terminal_column--;
   terminal_column--;
   terminal_move_cursor(cursor_pos -= 2);
 }
 
-void terminal_handle_input(char c) {
-  if (c == '\b') {
-    terminal_backspace();
-  } else {
-    terminal_putchar(c);
-  }
+void terminal_command_not_found(const char *command) {
+  terminal_putchar('\n');
+  terminal_setcolor(VGA_COLOR_RED);
+  terminal_writestring("Command not found: ");
+  terminal_setcolor(color_fg);
+  terminal_writestring(command);
+}
 
-  if (c == '\n') {
+void terminal_execute_command(const char *command) {
+  if (strcmp(command, "clear") == 0) {
+    terminal_clear();
+  } else {
+    terminal_command_not_found(command);
+  }
+}
+
+void terminal_handle_input(char c) {
+  static char command_buffer[256];
+  static size_t command_length = 0;
+
+  if (c == '\b') {
+    if (command_length > 0) {
+      terminal_backspace();
+      command_length--;
+    }
+  } else if (c == '\n') {
+    if (command_length > 0) {
+      command_buffer[command_length] = '\0';
+      terminal_execute_command(command_buffer);
+      command_length = 0;
+    }
+    terminal_putchar(c);
     terminal_begin_line();
+  } else {
+    if (command_length < sizeof(command_buffer) - 1) {
+      command_buffer[command_length++] = c;
+      terminal_putchar(c);
+    }
   }
 }

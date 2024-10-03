@@ -18,5 +18,7 @@ void terminal_newline();
 void terminal_begin_line();
 void terminal_clear();
 void terminal_scroll();
+void terminal_execute_command(const char *command);
+void terminal_command_not_found(const char *command);
 
 #endif
