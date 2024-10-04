@@ -12,18 +12,9 @@ enum vga_color color_fg = VGA_COLOR_LIGHT_GREY;
 enum vga_color color_bg = VGA_COLOR_BLACK;
 
 void terminal_init() {
-  terminal_row = 0;
-  terminal_column = 0;
-  cursor_pos = 0;
   terminal_color = vga_entry_color(color_fg, color_bg);
   terminal_buffer = (uint16_t *)0xB8000;
-  for (size_t y = 0; y < VGA_HEIGHT; y++) {
-    for (size_t x = 0; x < VGA_WIDTH; x++) {
-      const size_t index = y * VGA_WIDTH + x;
-      terminal_buffer[index] = vga_entry(' ', terminal_color);
-    }
-  }
-
+  terminal_clear();
   terminal_begin_line();
 }
 
@@ -126,9 +117,17 @@ void terminal_command_not_found(const char *command) {
   terminal_writestring(command);
 }
 
+void terminal_echo(const char *args) {
+  terminal_newline();
+  terminal_writestring(args);
+}
+
 void terminal_execute_command(const char *command) {
   if (strcmp(command, "clear") == 0) {
     terminal_clear();
+    terminal_row--;
+  } else if (strncmp(command, "echo ", 5) == 0) {
+    terminal_echo(command + 5);
   } else {
     terminal_command_not_found(command);
   }

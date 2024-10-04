@@ -1,9 +1,9 @@
 #ifndef TERMINAL_H
 #define TERMINAL_H
 
+#include "vga.h"
 #include <stddef.h>
 #include <stdint.h>
-#include "vga.h"
 
 void terminal_init();
 void terminal_setcolor(uint8_t color);
@@ -20,5 +20,6 @@ void terminal_clear();
 void terminal_scroll();
 void terminal_execute_command(const char *command);
 void terminal_command_not_found(const char *command);
+void terminal_echo(const char *args);
 
 #endif

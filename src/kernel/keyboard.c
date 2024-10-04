@@ -61,7 +61,7 @@ char scancode_to_ascii(unsigned char scan_code) {
   case 0x0E: 
     return '\b';
   default:
-    return 0;
+    return ' ';
   }
 }
 
