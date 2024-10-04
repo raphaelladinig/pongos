@@ -37,6 +37,6 @@ clean:
 clean-build: clean build
 
 run:
-  qemu-system-i386 -drive format=raw,file=out/sou.iso
+  qemu-system-x86_64 -drive format=raw,file=out/sou.iso
 
 build-run: clean-build run
