@@ -9,14 +9,15 @@ my attempt at programming a simple "os"
 ### Todo
 
 - [x] proper build script
-- [ ] write terminal
+- [x] write terminal
   - [x] proper output
   - [x] write keyboard driver
     - [x] write idt
-  - [ ] functionality
+  - [x] functionality
     - [x] scrolling
     - [x] basic commands
 - [ ] write pong
+  - [ ] graphics driver
 - [ ] try to get it working on real hardware
 
 ### Ressources
