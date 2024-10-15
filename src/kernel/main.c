@@ -1,11 +1,11 @@
 #include "include/interrupts.h"
 #include "include/terminal.h"
-#include "include/video.h"
+#include "include/vga.h"
 
 void init();
 
 int main() {
-  /* init(); */
+  init();
 
   video_init();
 

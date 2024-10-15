@@ -24,10 +24,6 @@ _start:
 	mov dl, [BOOT_DISK]
 	int 0x13
 
-	mov ah, 0x0
-	mov al, 0x3
-	int 0x10
-
 	CODE_SEG equ GDT_code - GDT_start
 	DATA_SEG equ GDT_data - GDT_start
 

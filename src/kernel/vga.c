@@ -1,4 +1,4 @@
-#include "include/video.h"
+#include "include/vga.h"
 #include "include/io.h"
 
 #define PALETTE_MASK 0x3C6
