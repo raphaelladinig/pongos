@@ -18,6 +18,8 @@ typedef struct {
   uint32_t base;
 } __attribute__((packed)) idt_ptr_t;
 
+void send_eoi(uint8_t irq);
+
 void idt_set(int index, uint32_t base, uint16_t selector, uint8_t type_attr);
 
 void idt_init();

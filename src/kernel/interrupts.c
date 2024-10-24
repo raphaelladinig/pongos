@@ -1,10 +1,12 @@
 #include "include/interrupts.h"
 #include "include/io.h"
 #include "include/keyboard.h"
+#include "include/timer.h"
 
 void interrupts_init() {
   pic_init();
   idt_init();
+  pit_init();
 }
 
 #define idt_entries 256
@@ -20,11 +22,19 @@ void idt_set(int index, uint32_t base, uint16_t selector, uint8_t type_attr) {
   idt[index].type_attr = type_attr;
 }
 
+void timer_interrupt() {
+  asm volatile("cli");
+  timer_tick();
+  send_eoi(0);
+  asm volatile("sti");
+}
+
 void idt_init() {
   idtp.limit = (sizeof(idt_entry_t) * idt_entries) - 1;
   idtp.base = (uintptr_t)&idt;
 
   idt_set(33, (uintptr_t)keyboard_interrupt, 0x08, 0x8e);
+  idt_set(32, (uintptr_t)timer_interrupt, 0x08, 0x8e);
 
   asm volatile("lidt %0" : : "m"(idtp));
   asm volatile("sti");
