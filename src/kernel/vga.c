@@ -1,5 +1,4 @@
 #include "include/vga.h"
-#include "include/io.h"
 
 #define VGA_MODE 0x13
 #define VGA_WIDTH 320

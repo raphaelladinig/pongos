@@ -1,5 +1,4 @@
 #include "include/terminal.h"
-#include "include/io.h"
 #include "include/lib.h"
 
 size_t terminal_row;

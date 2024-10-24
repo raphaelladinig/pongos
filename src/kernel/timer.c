@@ -1,4 +1,4 @@
-#include "include/io.h"
+#include "include/lib.h"
 #include "include/vga.h"
 
 int c = 1;

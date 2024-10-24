@@ -16,8 +16,10 @@ my attempt at programming a simple "os"
   - [x] functionality
     - [x] scrolling
     - [x] basic commands
+- [x] graphics driver
+  - [ ] switch between text and video mode
+- [ ] fix structure of the entire os
 - [ ] write pong
-  - [ ] graphics driver
 - [ ] try to get it working on real hardware
 
 ### Ressources
