@@ -1,23 +1,31 @@
 #include "include/vga.h"
 #include "include/io.h"
 
-#define PALETTE_MASK 0x3C6
-#define PALETTE_READ 0x3C7
-#define PALETTE_WRITE 0x3C8
-#define PALETTE_DATA 0x3C9
+#define VGA_MODE 0x13
+#define VGA_WIDTH 320
+#define VGA_HEIGHT 200
 
-typedef unsigned char u8;
-
-void video_init() {
-  outb(PALETTE_MASK, 0xFF);
-  outb(PALETTE_WRITE, 0);
-  for (u8 i = 0; i < 255; i++) {
-    outb(PALETTE_DATA, (((i >> 5) & 0x7) * (256 / 8)) / 4);
-    outb(PALETTE_DATA, (((i >> 2) & 0x7) * (256 / 8)) / 4);
-    outb(PALETTE_DATA, (((i >> 0) & 0x3) * (256 / 4)) / 4);
+void fill_screen(unsigned char color) {
+  unsigned char *video_memory = (unsigned char *)0xA0000;
+  for (int i = 0; i < VGA_WIDTH * VGA_HEIGHT; i++) {
+    video_memory[i] = color;
   }
+}
 
-  outb(PALETTE_DATA, 0x3F);
-  outb(PALETTE_DATA, 0x3F);
-  outb(PALETTE_DATA, 0x3F);
+void draw_rectangle(int x, int y, int width, int height, unsigned char color) {
+  unsigned char *video_memory = (unsigned char *)0xA0000;
+
+  for (int i = 0; i < height; i++) {
+    for (int j = 0; j < width; j++) {
+      int pixel_position = (y + i) * VGA_WIDTH + (x + j);
+      video_memory[pixel_position] = color;
+    }
+  }
+}
+
+void clear_screen() {
+  uint16_t *video_memory = (uint16_t *)0xA0000;
+  for (int i = 0; i < 320 * 200; i++) {
+    video_memory[i] = 0x20; // Space character
+  }
 }

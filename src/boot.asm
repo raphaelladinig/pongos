@@ -7,6 +7,9 @@ global  _start
 _start:
 	mov [BOOT_DISK], dl
 
+	mov ax, 0x0013; 320x200 256-color mode
+	int 0x10
+
 	xor ax, ax
 	mov es, ax
 	mov ds, ax

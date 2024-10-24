@@ -7,7 +7,8 @@ void init();
 int main() {
   init();
 
-  video_init();
+  draw_rectangle(50, 50, 100, 50, 4);
+  fill_screen(3);
 
   while (1) {
   }
@@ -16,6 +17,6 @@ int main() {
 }
 
 void init() {
-  terminal_init();
+  /* terminal_init(); */
   interrupts_init();
 }
