@@ -33,3 +33,14 @@ int strncmp(const char *str1, const char *str2, size_t n) {
     }
     return n == 0 ? 0 : *(unsigned char *)str1 - *(unsigned char *)str2;
 }
+
+void *memcpy(void *dest, const void *src, size_t n) {
+    char *csrc = (char *)src;
+    char *cdest = (char *)dest;
+
+    for (size_t i = 0; i < n; i++) {
+        cdest[i] = csrc[i];
+    }
+
+    return dest;
+}

@@ -11,15 +11,19 @@ void fill_screen(unsigned char color) {
   }
 }
 
-void draw_rectangle(int x, int y, int width, int height, unsigned char color) {
+void draw_rectangle(struct rectangle *rectangle) {
   unsigned char *video_memory = (unsigned char *)0xA0000;
 
-  for (int i = 0; i < height; i++) {
-    for (int j = 0; j < width; j++) {
-      int pixel_position = (y + i) * VGA_WIDTH + (x + j);
-      video_memory[pixel_position] = color;
+  for (int i = 0; i < rectangle->height; i++) {
+    for (int j = 0; j < rectangle->width; j++) {
+      int pixel_position = (rectangle->y + i) * VGA_WIDTH + (rectangle->x + j);
+      video_memory[pixel_position] = rectangle->color;
     }
   }
+}
+
+void erase_rectangle(struct rectangle *rectangle) {
+  draw_rectangle(&(struct rectangle){rectangle->x, rectangle->y, rectangle->width, rectangle->height, 0});
 }
 
 void clear_screen() {

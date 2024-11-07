@@ -3,7 +3,16 @@
 
 #include <stdint.h>
 
-void draw_rectangle(int x, int y, int width, int height, unsigned char color);
+struct rectangle {
+  int x;
+  int y;
+  int height;
+  int width;
+  unsigned char color;
+};
+
+void draw_rectangle(struct rectangle *rectangle);
+void erase_rectangle(struct rectangle *rectangle);
 void fill_screen(unsigned char color);
 void clear_screen();
 

@@ -1,5 +1,6 @@
 #include "include/terminal.h"
 #include "include/lib.h"
+#include "include/pong.h"
 
 size_t terminal_row;
 size_t terminal_column;
@@ -134,6 +135,8 @@ void terminal_execute_command(const char *command) {
     terminal_row--;
   } else if (strncmp(command, "echo ", 5) == 0) {
     terminal_echo(command + 5);
+  } else if (strcmp(command, "pong") == 0) {
+    pong_init();
   } else {
     terminal_command_not_found(command);
   }
