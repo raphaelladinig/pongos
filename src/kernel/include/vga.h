@@ -16,5 +16,6 @@ void erase_rectangle(struct rectangle *rectangle);
 void fill_screen(unsigned char color);
 void clear_screen();
 void switch_to_video_mode();
+void switch_to_text_mode();
 
 #endif

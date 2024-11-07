@@ -28,13 +28,33 @@ void erase_rectangle(struct rectangle *rectangle) {
 }
 
 void clear_screen() {
-  uint16_t *video_memory = (uint16_t *)0xA0000;
-  for (int i = 0; i < 320 * 200; i++) {
-    video_memory[i] = 0x20; // Space character
+  unsigned char *video_memory = (unsigned char *)0xA0000;
+  for (int i = 0; i < VGA_WIDTH * VGA_HEIGHT; i++) {
+    video_memory[i] = 0x00;
   }
 }
 
 void switch_to_video_mode() {
-  extern void switch_to_real_mode();
-  switch_to_real_mode();
+  asm volatile(
+    "cli\n"                      // Disable interrupts
+    "mov %cr0, %eax\n"           // Move CR0 to EAX
+    "and $0x7FFFFFFE, %eax\n"    // Clear PE bit (bit 0) to switch to real mode
+    "mov %eax, %cr0\n"           // Move EAX back to CR0
+    "jmp 1f\n"                   // Far jump to flush the pipeline
+    "1:\n"
+    "mov $0x13, %ax\n"           // Set video mode 0x13
+    "int $0x10\n"                // BIOS interrupt
+    "mov %cr0, %eax\n"           // Move CR0 to EAX
+    "or $0x1, %eax\n"            // Set PE bit (bit 0) to switch back to protected mode
+    "mov %eax, %cr0\n"           // Move EAX back to CR0
+    "jmp 2f\n"                   // Far jump to flush the pipeline
+    "2:\n"
+    "sti\n"                      // Enable interrupts
+  );
+  clear_screen();
+}
+
+void switch_to_text_mode() {
+  asm volatile("mov $0x03, %ax\n"
+               "int $0x10\n");
 }

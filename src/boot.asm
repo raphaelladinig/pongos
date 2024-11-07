@@ -6,7 +6,8 @@ global  _start
 
 _start:
 	mov [BOOT_DISK], dl
-
+  
+  ; switch to 300x200 video mode
 	; mov ax, 0x13
 	; int 0x10
 

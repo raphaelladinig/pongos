@@ -17,7 +17,7 @@ void move_ball(struct rectangle *ball) {
   ball->y += velocity_y;
 
   // Check for collision with bounds and reverse direction if needed
-  if (ball->x <= 0 || ball->x >= 300 - ball->width) {
+  if (ball->x <= 0 || ball->x >= 320 - ball->width) {
     velocity_x = -velocity_x;
   }
   if (ball->y <= 0 || ball->y >= 200 - ball->width) {
