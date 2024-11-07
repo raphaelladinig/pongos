@@ -23,7 +23,8 @@ void draw_rectangle(struct rectangle *rectangle) {
 }
 
 void erase_rectangle(struct rectangle *rectangle) {
-  draw_rectangle(&(struct rectangle){rectangle->x, rectangle->y, rectangle->width, rectangle->height, 0});
+  draw_rectangle(&(struct rectangle){rectangle->x, rectangle->y,
+                                     rectangle->width, rectangle->height, 0});
 }
 
 void clear_screen() {
@@ -31,4 +32,9 @@ void clear_screen() {
   for (int i = 0; i < 320 * 200; i++) {
     video_memory[i] = 0x20; // Space character
   }
+}
+
+void switch_to_video_mode() {
+  extern void switch_to_real_mode();
+  switch_to_real_mode();
 }

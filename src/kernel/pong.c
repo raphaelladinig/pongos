@@ -1,6 +1,7 @@
 #include "include/pong.h"
 #include "include/timer.h"
 #include "include/vga.h"
+#include "include/terminal.h"
 
 struct rectangle ball;
 int velocity_x;
@@ -26,7 +27,7 @@ void move_ball(struct rectangle *ball) {
   draw_rectangle(ball);
 }
 
-void timer_tick() { move_ball(&ball); };
+/* void timer_tick() { move_ball(&ball); }; */
 
 void pong_init() {
   ball = (struct rectangle){160, 100, 5, 5, 0x0F};
@@ -34,4 +35,9 @@ void pong_init() {
   velocity_y = 2;
   left_paddle = (struct rectangle){0, 50, 50, 5, 0x0F};
   right_paddle = (struct rectangle){310, 50, 50, 5, 0x0F};
+
+  terminal_writestring("\nSTARTING PONG");
+  switch_to_video_mode();
+
+  draw_rectangle(&left_paddle);
 }

@@ -2,9 +2,9 @@
 
 int c = 1;
 
-/* void timer_tick() { */
-/*   c++; */
-/* } */
+void timer_tick() {
+  c++;
+}
 
 void pit_init() {
   outb(0x43, 0x34);
