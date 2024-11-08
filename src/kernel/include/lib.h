@@ -1,10 +1,10 @@
 #ifndef LIB_H
 #define LIB_H
 
-#include <stddef.h>
 #include "io.h"
+#include <stddef.h>
 
-size_t strlen(const char*);
+size_t strlen(const char *);
 void print(const char *data);
 void println(const char *data);
 int strcmp(const char *str1, const char *str2);

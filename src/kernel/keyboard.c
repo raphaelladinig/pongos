@@ -69,6 +69,6 @@ void keyboard_handle_input() {
   unsigned char scancode = inb(0x60);
 
   if (scancode < 0x80) {
-    terminal_handle_input(scancode_to_ascii(scancode));
+    /* terminal_handle_input(scancode_to_ascii(scancode)); */
   }
 }

@@ -36,8 +36,7 @@ void pong_init() {
   left_paddle = (struct rectangle){0, 50, 50, 5, 0x0F};
   right_paddle = (struct rectangle){310, 50, 50, 5, 0x0F};
 
-  terminal_writestring("\nSTARTING PONG");
-  switch_to_video_mode();
+  /* terminal_writestring("\nSTARTING PONG"); */
 
   draw_rectangle(&left_paddle);
 }

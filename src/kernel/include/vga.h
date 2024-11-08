@@ -17,5 +17,7 @@ void fill_screen(unsigned char color);
 void clear_screen();
 void switch_to_video_mode();
 void switch_to_text_mode();
+void draw_char(int x, int y, char c, unsigned char color);
+void draw_text(int x, int y, const char *text, unsigned char color);
 
 #endif
