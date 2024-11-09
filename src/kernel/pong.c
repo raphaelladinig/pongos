@@ -30,13 +30,11 @@ void move_ball(struct rectangle *ball) {
 /* void timer_tick() { move_ball(&ball); }; */
 
 void pong_init() {
+  clear_screen();
+  
   ball = (struct rectangle){160, 100, 5, 5, 0x0F};
   velocity_x = 2;
   velocity_y = 2;
   left_paddle = (struct rectangle){0, 50, 50, 5, 0x0F};
   right_paddle = (struct rectangle){310, 50, 50, 5, 0x0F};
-
-  /* terminal_writestring("\nSTARTING PONG"); */
-
-  draw_rectangle(&left_paddle);
 }

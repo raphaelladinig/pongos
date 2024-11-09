@@ -1,10 +1,7 @@
 #include "include/vga.h"
 #include "include/lib.h"
 
-#define VGA_WIDTH 320
-#define VGA_HEIGHT 200
-
-static const unsigned char font[26][8] = {
+static const unsigned char font[27][8] = {
     {0x00, 0x00, 0x3C, 0x04, 0x3C, 0x44, 0x3E, 0x00}, // a
     {0x00, 0x40, 0x40, 0x5C, 0x62, 0x42, 0x7C, 0x00}, // b
     {0x00, 0x00, 0x3C, 0x40, 0x40, 0x40, 0x3C, 0x00}, // c
@@ -31,13 +28,20 @@ static const unsigned char font[26][8] = {
     {0x00, 0x00, 0x42, 0x24, 0x18, 0x24, 0x42, 0x00}, // x
     {0x00, 0x00, 0x42, 0x42, 0x46, 0x3A, 0x02, 0x3C}, // y
     {0x00, 0x00, 0x7E, 0x04, 0x18, 0x20, 0x7E, 0x00}, // z
+    {0x00, 0x10, 0x3C, 0x50, 0x3C, 0x12, 0x3C, 0x10}, // $
 };
 
 void draw_char(int x, int y, char c, unsigned char color) {
-  if (c < 'a' || c > 'z') return; // Only draw characters in the font array
-
-  const unsigned char *bitmap = font[c - 'a'];
+  const unsigned char *bitmap;
   unsigned char *video_memory = (unsigned char *)0xA0000;
+
+  if (c == '$') {
+    bitmap = font[26];
+  } else if (c >= 'a' && c <= 'z') {
+    bitmap = font[c - 'a'];
+  } else {
+    return; // Only draw characters in the font array
+  }
 
   for (int i = 0; i < 8; i++) {
     for (int j = 0; j < 8; j++) {

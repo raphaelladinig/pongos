@@ -3,6 +3,9 @@
 
 #include <stdint.h>
 
+#define VGA_WIDTH 320
+#define VGA_HEIGHT 200
+
 struct rectangle {
   int x;
   int y;
