@@ -1,5 +1,4 @@
 #include "include/vga.h"
-#include "include/lib.h"
 
 static const unsigned char font[27][8] = {
     {0x00, 0x00, 0x3C, 0x04, 0x3C, 0x44, 0x3E, 0x00}, // a
@@ -80,12 +79,12 @@ void draw_rectangle(struct rectangle *rectangle) {
 
 void erase_rectangle(struct rectangle *rectangle) {
   draw_rectangle(&(struct rectangle){rectangle->x, rectangle->y,
-                                     rectangle->width, rectangle->height, 0});
+                                     rectangle->width, rectangle->height, VGA_COLOR_BLACK});
 }
 
 void clear_screen() {
   unsigned char *video_memory = (unsigned char *)0xA0000;
   for (int i = 0; i < VGA_WIDTH * VGA_HEIGHT; i++) {
-    video_memory[i] = 0x00;
+    video_memory[i] = VGA_COLOR_BLACK;
   }
 }

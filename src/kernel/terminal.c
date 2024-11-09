@@ -6,14 +6,25 @@
 size_t terminal_row;
 size_t terminal_column;
 size_t cursor_pos;
-uint8_t terminal_color = 0x0F;
+uint8_t terminal_color = VGA_COLOR_WHITE;
+int terminal_active = 1;
 
 void terminal_init() {
+  terminal_active = 1;
   terminal_clear();
   terminal_begin_line();
 }
 
+void terminal_activate() {
+  terminal_active = 1;
+}
+
+void terminal_deactivate() {
+  terminal_active = 0;
+}
+
 void terminal_clear() {
+  if (!terminal_active) return;
   clear_screen();
 
   terminal_row = 0;
@@ -21,9 +32,20 @@ void terminal_clear() {
   cursor_pos = 0;
 }
 
-void terminal_begin_line() { terminal_writestring("$ "); }
+void terminal_setcolor(uint8_t color) {
+  if (!terminal_active) return;
+  terminal_color = color;
+}
+
+void terminal_begin_line() {
+  if (!terminal_active) return;
+  terminal_setcolor(VGA_COLOR_GREEN);
+  terminal_writestring("$ ");
+  terminal_setcolor(VGA_COLOR_WHITE);
+}
 
 void terminal_newline() {
+  if (!terminal_active) return;
   terminal_row += 8;
 
   if (terminal_row == VGA_HEIGHT) {
@@ -35,6 +57,7 @@ void terminal_newline() {
 }
 
 void terminal_putchar(char c) {
+  if (!terminal_active) return;
   if (c == '\n') {
     terminal_newline();
   } else {
@@ -49,31 +72,37 @@ void terminal_putchar(char c) {
 }
 
 void terminal_write(const char *data, size_t size) {
+  if (!terminal_active) return;
   for (size_t i = 0; i < size; i++)
     terminal_putchar(data[i]);
 }
 
 void terminal_writestring(const char *data) {
+  if (!terminal_active) return;
   terminal_write(data, strlen(data));
 }
 
 void terminal_backspace() {
+  if (!terminal_active) return;
   terminal_column -= 8;
   erase_rectangle(&(struct rectangle){terminal_column, terminal_row, 8, 8, 0});
 }
 
 void terminal_command_not_found(const char *command) {
+  if (!terminal_active) return;
   terminal_putchar('\n');
   terminal_writestring("command not found ");
   terminal_writestring(command);
 }
 
 void terminal_echo(const char *args) {
+  if (!terminal_active) return;
   terminal_newline();
   terminal_writestring(args);
 }
 
 void terminal_execute_command(const char *command) {
+  if (!terminal_active) return;
   if (strcmp(command, "clear") == 0) {
     terminal_clear();
   } else if (strncmp(command, "echo ", 5) == 0) {
@@ -86,6 +115,7 @@ void terminal_execute_command(const char *command) {
 }
 
 void terminal_handle_input(char c) {
+  if (!terminal_active) return;
   static char command_buffer[256];
   static size_t command_length = 0;
 

@@ -30,6 +30,7 @@ void move_ball(struct rectangle *ball) {
 /* void timer_tick() { move_ball(&ball); }; */
 
 void pong_init() {
+  terminal_deactivate();
   clear_screen();
   
   ball = (struct rectangle){160, 100, 5, 5, 0x0F};
