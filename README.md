@@ -12,6 +12,7 @@ my attempt at programming a simple "os"
 - [x] graphics driver
 - [x] write terminal
 - [ ] write pong
+  - [ ] fix screen flashing prob interrupts
 - [ ] try to get it working on real hardware
 
 ### Ressources
