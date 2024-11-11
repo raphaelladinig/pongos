@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 
+extern void (*timer)();
 void interrupts_init();
 
 typedef struct {

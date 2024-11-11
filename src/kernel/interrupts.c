@@ -1,7 +1,12 @@
 #include "include/interrupts.h"
-#include "include/lib.h"
 #include "include/keyboard.h"
-#include "include/timer.h"
+#include "include/lib.h"
+
+void pit_init() {
+  outb(0x43, 0x34);
+  outb(0x40, (unsigned char)(1193180 / 100));
+  outb(0x21, inb(0x21) & ~0x01);
+}
 
 void interrupts_init() {
   pic_init();
@@ -22,9 +27,15 @@ void idt_set(int index, uint32_t base, uint16_t selector, uint8_t type_attr) {
   idt[index].type_attr = type_attr;
 }
 
+void (*timer)() = NULL;
+int c = 1;
+
 void timer_interrupt() {
   asm volatile("cli");
-  timer_tick();
+  c++;
+  if (timer) {
+    timer();
+  }
   send_eoi(0);
   asm volatile("sti");
 }
