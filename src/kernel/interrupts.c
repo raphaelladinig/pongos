@@ -28,11 +28,9 @@ void idt_set(int index, uint32_t base, uint16_t selector, uint8_t type_attr) {
 }
 
 void (*timer)() = NULL;
-int c = 1;
 
 void timer_interrupt() {
   asm volatile("cli");
-  c++;
   if (timer) {
     timer();
   }

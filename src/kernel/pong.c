@@ -1,5 +1,6 @@
 #include "include/pong.h"
 #include "include/interrupts.h"
+#include "include/keyboard.h"
 #include "include/terminal.h"
 #include "include/vga.h"
 
@@ -67,6 +68,23 @@ void loop() {
   check_collision();
 }
 
+void pong_handle_input() {
+  char c = keyboard_get_input();
+  if (c == NULL) {
+    return;
+  }
+
+  if (c == 'w') {
+    move_paddle(&left_paddle, -1);
+  } else if (c == 's') {
+    move_paddle(&left_paddle, 1);
+  } else if (c == 'o') {
+    move_paddle(&right_paddle, -1);
+  } else if (c == 'l') {
+    move_paddle(&right_paddle, 1);
+  }
+}
+
 void pong_init() {
   terminal_deactivate();
   clear_screen();
@@ -77,5 +95,10 @@ void pong_init() {
   left_paddle = (struct rectangle){0, 50, 50, 5, 0x0F};
   right_paddle = (struct rectangle){310, 50, 50, 5, 0x0F};
 
+  draw_rectangle(&ball);
+  draw_rectangle(&left_paddle);
+  draw_rectangle(&right_paddle);
+
   timer = loop;
+  keyboard_handle_input = pong_handle_input;
 }

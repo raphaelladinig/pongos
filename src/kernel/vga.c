@@ -79,7 +79,7 @@ void draw_rectangle(struct rectangle *rectangle) {
 
 void erase_rectangle(struct rectangle *rectangle) {
   draw_rectangle(&(struct rectangle){rectangle->x, rectangle->y,
-                                     rectangle->width, rectangle->height, VGA_COLOR_BLACK});
+                                     rectangle->height, rectangle->width, VGA_COLOR_BLACK});
 }
 
 void clear_screen() {
