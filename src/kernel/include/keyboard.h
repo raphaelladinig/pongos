@@ -2,6 +2,7 @@
 #define KEYBOARD_H
 
 char scancode_to_ascii(unsigned char scan_code);
-void keyboard_handle_input();
+extern void (*keyboard_handle_input)();
+char keyboard_get_input();
 
 #endif

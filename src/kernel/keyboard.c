@@ -1,5 +1,5 @@
-#include "include/lib.h"
 #include "include/keyboard.h"
+#include "include/lib.h"
 #include "include/terminal.h"
 
 char scancode_to_ascii(unsigned char scan_code) {
@@ -56,19 +56,20 @@ char scancode_to_ascii(unsigned char scan_code) {
     return 'y';
   case 0x2C:
     return 'z';
-  case 0x1C: 
+  case 0x1C:
     return '\n';
-  case 0x0E: 
+  case 0x0E:
     return '\b';
   default:
     return ' ';
   }
 }
 
-void keyboard_handle_input() {
+char keyboard_get_input() {
   unsigned char scancode = inb(0x60);
-
   if (scancode < 0x80) {
-    terminal_handle_input(scancode_to_ascii(scancode));
+    return scancode_to_ascii(scancode);
   }
 }
+
+void (*keyboard_handle_input)() = NULL;

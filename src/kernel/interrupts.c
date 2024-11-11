@@ -90,7 +90,9 @@ void send_eoi(uint8_t irq) {
 
 void keyboard_interrupt() {
   asm volatile("cli");
-  keyboard_handle_input();
+  if (keyboard_handle_input) {
+    keyboard_handle_input();
+  }
   send_eoi(1);
   asm volatile("sti");
 }

@@ -11,7 +11,7 @@ void terminal_setcolor(uint8_t color);
 void terminal_putchar(char c);
 void terminal_write(const char *data, size_t size);
 void terminal_writestring(const char *data);
-void terminal_handle_input(char c);
+void terminal_handle_input();
 void terminal_backspace();
 void terminal_newline();
 void terminal_begin_line();

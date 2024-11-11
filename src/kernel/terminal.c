@@ -1,4 +1,5 @@
 #include "include/terminal.h"
+#include "include/keyboard.h"
 #include "include/lib.h"
 #include "include/pong.h"
 #include "include/vga.h"
@@ -10,21 +11,19 @@ uint8_t terminal_color = VGA_COLOR_WHITE;
 int terminal_active = 1;
 
 void terminal_init() {
+  keyboard_handle_input = terminal_handle_input;
   terminal_active = 1;
   terminal_clear();
   terminal_begin_line();
 }
 
-void terminal_activate() {
-  terminal_active = 1;
-}
+void terminal_activate() { terminal_active = 1; }
 
-void terminal_deactivate() {
-  terminal_active = 0;
-}
+void terminal_deactivate() { terminal_active = 0; }
 
 void terminal_clear() {
-  if (!terminal_active) return;
+  if (!terminal_active)
+    return;
   clear_screen();
 
   terminal_row = 0;
@@ -33,19 +32,22 @@ void terminal_clear() {
 }
 
 void terminal_setcolor(uint8_t color) {
-  if (!terminal_active) return;
+  if (!terminal_active)
+    return;
   terminal_color = color;
 }
 
 void terminal_begin_line() {
-  if (!terminal_active) return;
+  if (!terminal_active)
+    return;
   terminal_setcolor(VGA_COLOR_GREEN);
   terminal_writestring("$ ");
   terminal_setcolor(VGA_COLOR_WHITE);
 }
 
 void terminal_newline() {
-  if (!terminal_active) return;
+  if (!terminal_active)
+    return;
   terminal_row += 8;
 
   if (terminal_row == VGA_HEIGHT) {
@@ -57,7 +59,8 @@ void terminal_newline() {
 }
 
 void terminal_putchar(char c) {
-  if (!terminal_active) return;
+  if (!terminal_active)
+    return;
   if (c == '\n') {
     terminal_newline();
   } else {
@@ -72,37 +75,43 @@ void terminal_putchar(char c) {
 }
 
 void terminal_write(const char *data, size_t size) {
-  if (!terminal_active) return;
+  if (!terminal_active)
+    return;
   for (size_t i = 0; i < size; i++)
     terminal_putchar(data[i]);
 }
 
 void terminal_writestring(const char *data) {
-  if (!terminal_active) return;
+  if (!terminal_active)
+    return;
   terminal_write(data, strlen(data));
 }
 
 void terminal_backspace() {
-  if (!terminal_active) return;
+  if (!terminal_active)
+    return;
   terminal_column -= 8;
   erase_rectangle(&(struct rectangle){terminal_column, terminal_row, 8, 8, 0});
 }
 
 void terminal_command_not_found(const char *command) {
-  if (!terminal_active) return;
+  if (!terminal_active)
+    return;
   terminal_putchar('\n');
   terminal_writestring("command not found ");
   terminal_writestring(command);
 }
 
 void terminal_echo(const char *args) {
-  if (!terminal_active) return;
+  if (!terminal_active)
+    return;
   terminal_newline();
   terminal_writestring(args);
 }
 
 void terminal_execute_command(const char *command) {
-  if (!terminal_active) return;
+  if (!terminal_active)
+    return;
   if (strcmp(command, "clear") == 0) {
     terminal_clear();
   } else if (strncmp(command, "echo ", 5) == 0) {
@@ -114,8 +123,14 @@ void terminal_execute_command(const char *command) {
   }
 }
 
-void terminal_handle_input(char c) {
-  if (!terminal_active) return;
+void terminal_handle_input() {
+  char c = keyboard_get_input();
+  if (c == NULL) {
+    return;
+  }
+
+  if (!terminal_active)
+    return;
   static char command_buffer[256];
   static size_t command_length = 0;
 
